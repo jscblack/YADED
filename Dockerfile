@@ -31,7 +31,6 @@ RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed
     -p https://github.com/zsh-users/zsh-completions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting
 
-RUN chsh -s /bin/zsh
 RUN rm -rf /var/lib/apt/lists/*
 EXPOSE 22
 CMD ["/usr/sbin/sshd","-D"]
