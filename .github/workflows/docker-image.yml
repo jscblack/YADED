@@ -37,4 +37,4 @@ jobs:
         builder: ${{ steps.buildx.outputs.name }}
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/0.1byaded
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/byaded:0.
