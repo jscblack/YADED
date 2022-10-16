@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-ENV TZ Asia/Shanghai
+#ENV TZ Asia/Shanghai modify as you want
 ENV LANG en_US.UTF-8
 
 MAINTAINER jscblack@china
