@@ -1,5 +1,6 @@
 FROM ubuntu:22.04
-ENV TZ Asia/Shanghai modify as you want
+# modify as you want
+ENV TZ Asia/Shanghai 
 ENV LANG en_US.UTF-8
 
 MAINTAINER jscblack@china
