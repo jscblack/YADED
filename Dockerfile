@@ -23,7 +23,9 @@ RUN mkdir /var/run/sshd \
 RUN echo "root:123456" | chpasswd \
         && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
-RUN apt-get install -y iputils-ping net-tools build-essential git vim zsh
+RUN apt-get install -y iputils-ping net-tools iproute2 traceroute
+
+RUN apt-get install -y build-essential git vim zsh
 
 RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed2af7ac48ea12030a54/raw/d0866278a6dbb4d4f5d59d138dc1cc5f465ed157/chiang-zsh-in-docker.sh)" -- \
     -p git \
