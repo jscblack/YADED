@@ -28,11 +28,15 @@ RUN echo "root:123456" | chpasswd \
 
 
 #==================Dev Environment Begin==================#
-RUN apt install -y iputils-ping net-tools iproute2 traceroute
+RUN apt install -y iputils-ping net-tools iproute2 traceroute # network
 
-RUN apt install -y build-essential cmake git vim nano
+RUN apt install -y build-essential cmake # basic compiler
 
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+RUN apt install -y git vim nano # misc
+
+RUN apt install -y lsb-release wget software-properties-common gnupg # llvm dependency
+
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # llvm toolchain
 #==================Dev Environment End==================#
 
 
