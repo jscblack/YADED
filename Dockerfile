@@ -17,9 +17,9 @@ RUN apt update && apt install -y locales \
         && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
 	&& apt install -y apt-utils openssh-client openssh-server
 
-RUN apt install -y tzdata
-    && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
-    && echo ${TZ} > /etc/timezone
+RUN apt install -y tzdata \
+    && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && echo ${TZ} > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata
 
 RUN mkdir /var/run/sshd \
