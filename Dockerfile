@@ -1,6 +1,8 @@
 FROM ubuntu:22.04
-ARG DEBIAN_FRONTEND=noninteractive # set to noninteractive
-ENV TZ=Asia/Shanghai # modify as you want
+# set to noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
+# modify as you want
+ENV TZ=Asia/Shanghai
 ENV LANG=en_US.UTF-8
 
 MAINTAINER jscblack@china
