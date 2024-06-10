@@ -1,8 +1,6 @@
 FROM ubuntu:22.04
-# set to noninteractive
-ARG DEBIAN_FRONTEND=noninteractive
-# modify as you want
-ENV TZ=Asia/Shanghai 
+ARG DEBIAN_FRONTEND=noninteractive # set to noninteractive
+ENV TZ=Asia/Shanghai # modify as you want
 ENV LANG=en_US.UTF-8
 
 MAINTAINER jscblack@china
@@ -15,7 +13,12 @@ RUN apt update \
 
 RUN apt update && apt install -y locales \
         && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-	&& apt install -y apt-utils openssh-client openssh-server tzdata
+	&& apt install -y apt-utils openssh-client openssh-server
+
+RUN apt install -y tzdata
+    && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
+    && echo ${TZ} > /etc/timezone
+    && dpkg-reconfigure --frontend noninteractive tzdata
 
 RUN mkdir /var/run/sshd \
         && mkdir /root/.ssh
@@ -23,7 +26,6 @@ RUN mkdir /var/run/sshd \
 RUN echo "root:123456" | chpasswd \
         && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 #==================Base Environment End==================#
-
 
 
 #==================Dev Environment Begin==================#
@@ -39,7 +41,6 @@ RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # llvm toolchain
 #==================Dev Environment End==================#
 
 
-
 #==================ZSH Environment Begin==================#
 RUN apt install -y zsh
 
@@ -51,6 +52,7 @@ RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed
     -p https://github.com/mattmc3/zsh-safe-rm
 RUN chsh -s /bin/zsh
 #==================ZSH Environment End==================#
+
 
 #==================Post Process==================#
 RUN rm -rf /var/lib/apt/lists/*
