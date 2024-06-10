@@ -44,11 +44,12 @@ RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # llvm toolchain
 #==================ZSH Environment Begin==================#
 RUN apt install -y zsh
 
-RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed2af7ac48ea12030a54/raw/d0866278a6dbb4d4f5d59d138dc1cc5f465ed157/chiang-zsh-in-docker.sh)" -- \
+RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed2af7ac48ea12030a54/raw/d595af7c10b731d66e1e6866034130db03858af1/chiang-zsh-in-docker.sh)" -- \
     -p git \
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-completions \
-    -p https://github.com/zsh-users/zsh-syntax-highlighting
+    -p https://github.com/zsh-users/zsh-syntax-highlighting \
+    -p https://github.com/mattmc3/zsh-safe-rm
 RUN chsh -s /bin/zsh
 #==================ZSH Environment End==================#
 
