@@ -3,14 +3,18 @@
 
 Yet Another Development Environment in Docker
 
-Required Font:**MesloLGS NF**
+## Example
+Recommended Font:**MesloLGS NF**
+![image](https://github.com/jscblack/YADED/assets/33062157/7dac7590-1582-42d5-a845-ddd5a6c5e02e)
 
-Example:
-![image](https://user-images.githubusercontent.com/33062157/196014804-635d846d-9647-4a02-8f92-cb3f73b606aa.png)
+## Feature
+* Based on Ubuntu 22.04
+* Out-of-the-box Zsh with pre-configured Power10k theme
+* Pre-installed useful Zsh plugins (autosuggestions, completions, syntax-highlighting)
+* Redirecting rm to ensure file safety
+* Pre-installed common development toolkits, providing consistent and portable development environment, alleviating the hassle of environment conflicts between different projects
 
-
-Usage:
-
+## Usage
 1. Start the container. Modify the name and port as you want
 
    ``docker run -d --name <container_name> -p <public_port>:22 -v $(pwd)/<workspace_dir>:/root/workspace registry.cn-hangzhou.aliyuncs.com/jscblack/yaded:latest``
