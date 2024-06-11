@@ -4,7 +4,10 @@
 Yet Another Development Environment in Docker
 
 ## Example
-Recommended Font:**MesloLGS NF**
+Recommended Font: **MesloLGS NF**
+
+Download: [Link1(Global)](https://mega.nz/file/7LZWBZQD#Jhuxhx4mwrrQEunCRjRuNKspWDKpXgzkV3n2Hy0kMgk)/[Link2(CN)](https://wwk.lanzoue.com/iaVgV21kpp4d)
+
 ![image](https://github.com/jscblack/YADED/assets/33062157/7dac7590-1582-42d5-a845-ddd5a6c5e02e)
 
 ## Feature
