@@ -51,9 +51,6 @@ ARG ZSH_PACKAGES="\
 # Base Environment Setup
 RUN apt-get update \
     && apt-get install -y --no-install-recommends $BASE_PACKAGES $NETWORK_PACKAGES $COMPILER_PACKAGES $MISC_PACKAGES $LLVM_DEPENDENCIES $ZSH_PACKAGES \
-    # Update source list for mirrors
-    && sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list \
-    && sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list \
     # Configure locales
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     # Configure timezone
