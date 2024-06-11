@@ -29,11 +29,14 @@ ARG NETWORK_PACKAGES="\
 # Compiler tools
 ARG COMPILER_PACKAGES="\
     build-essential \
+    gdb \
     cmake"
 
 # Miscellaneous tools
 ARG MISC_PACKAGES="\
     git \
+    zip \
+    unzip \
     vim \
     nano"
 
@@ -80,4 +83,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Expose port and set default command
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+
+# Specify the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
