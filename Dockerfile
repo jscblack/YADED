@@ -1,62 +1,86 @@
 FROM ubuntu:22.04
-# set to noninteractive
+
+# Metadata
+LABEL maintainer="jscblack@china"
+
+# Set environment variables
 ARG DEBIAN_FRONTEND=noninteractive
-# modify as you want
 ENV TZ=Asia/Shanghai
 ENV LANG=en_US.UTF-8
 
-MAINTAINER jscblack@china
+# Define the package lists for easy maintenance
+# Base packages
+ARG BASE_PACKAGES="\
+    apt-transport-https \
+    ca-certificates \
+    locales \
+    apt-utils \
+    openssh-client \
+    openssh-server \
+    tzdata"
 
-#==================Base Environment Begin==================#
-RUN apt update \
-	&& apt install -y apt-transport-https ca-certificates \
-	&& sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list \
-    	&& sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list
+# Network tools
+ARG NETWORK_PACKAGES="\
+    iputils-ping \
+    net-tools \
+    iproute2 \
+    traceroute"
 
-RUN apt update && apt install -y locales \
-        && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
-	&& apt install -y apt-utils openssh-client openssh-server
+# Compiler tools
+ARG COMPILER_PACKAGES="\
+    build-essential \
+    cmake"
 
-RUN apt install -y tzdata \
+# Miscellaneous tools
+ARG MISC_PACKAGES="\
+    git \
+    vim \
+    nano"
+
+# LLVM dependencies
+ARG LLVM_DEPENDENCIES="\
+    lsb-release \
+    wget \
+    software-properties-common \
+    gnupg"
+
+# ZSH shell
+ARG ZSH_PACKAGES="\
+    zsh"
+
+# Base Environment Setup
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends $BASE_PACKAGES $NETWORK_PACKAGES $COMPILER_PACKAGES $MISC_PACKAGES $LLVM_DEPENDENCIES $ZSH_PACKAGES \
+    # Update source list for mirrors
+    && sed -i "s@http://.*archive.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list \
+    && sed -i "s@http://.*security.ubuntu.com@https://mirrors.tuna.tsinghua.edu.cn@g" /etc/apt/sources.list \
+    # Configure locales
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
+    # Configure timezone
     && ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
-    && dpkg-reconfigure --frontend noninteractive tzdata
+    && dpkg-reconfigure --frontend noninteractive tzdata \
+    # SSH setup
+    && mkdir /var/run/sshd \
+    && mkdir /root/.ssh \
+    && echo "root:123456" | chpasswd \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
-RUN mkdir /var/run/sshd \
-        && mkdir /root/.ssh
+# Install LLVM toolchain
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
-RUN echo "root:123456" | chpasswd \
-        && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-#==================Base Environment End==================#
-
-
-#==================Dev Environment Begin==================#
-RUN apt install -y iputils-ping net-tools iproute2 traceroute # network
-
-RUN apt install -y build-essential cmake # basic compiler
-
-RUN apt install -y git vim nano # misc
-
-RUN apt install -y lsb-release wget software-properties-common gnupg # llvm dependency
-
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" # llvm toolchain
-#==================Dev Environment End==================#
-
-
-#==================ZSH Environment Begin==================#
-RUN apt install -y zsh
-
+# Install and configure ZSH with plugins
 RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed2af7ac48ea12030a54/raw/d595af7c10b731d66e1e6866034130db03858af1/chiang-zsh-in-docker.sh)" -- \
     -p git \
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-completions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
-    -p https://github.com/mattmc3/zsh-safe-rm
-RUN chsh -s /bin/zsh
-#==================ZSH Environment End==================#
+    -p https://github.com/mattmc3/zsh-safe-rm \
+    && chsh -s /bin/zsh
 
+# Clean up APT when done
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#==================Post Process==================#
-RUN rm -rf /var/lib/apt/lists/*
+# Expose port and set default command
 EXPOSE 22
-CMD ["/usr/sbin/sshd","-D"]
+CMD ["/usr/sbin/sshd", "-D"]
