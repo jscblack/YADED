@@ -84,5 +84,9 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Expose port and set default command
 EXPOSE 22
 
+# Copy entrypoint
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+
 # Specify the entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
