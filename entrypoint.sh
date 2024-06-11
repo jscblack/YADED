@@ -19,7 +19,7 @@ if ! [ -f "/root/.ssh/.container_init.pwd" ]; then
     echo "root:${password}" | chpasswd
     
     # Output the password (optional)
-    echo "!!!WARNING: Change the password immediately after logging into the dev container for security reasons!!!"
+    echo "WARNING: Change the password immediately after logging into the dev container for security reasons"
     echo "root password: ${password}"
 fi
 
