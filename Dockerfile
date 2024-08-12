@@ -67,7 +67,11 @@ RUN apt-get update \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
 # Install LLVM toolchain
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" \
+    && current_llvm_stable=$(wget -qO- https://apt.llvm.org/llvm.sh | grep -oP 'CURRENT_LLVM_STABLE=\K\d+') \
+    && ln -sf "/usr/bin/clang-$current_llvm_stable" /usr/local/bin/clang \
+    && ln -sf "/usr/bin/clang++-$current_llvm_stable" /usr/local/bin/clang++ \
+    && ln -sf "/usr/bin/clangd-$current_llvm_stable" /usr/local/bin/clangd
 
 # Install and configure ZSH with plugins
 RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed2af7ac48ea12030a54/raw/d595af7c10b731d66e1e6866034130db03858af1/chiang-zsh-in-docker.sh)" -- \
