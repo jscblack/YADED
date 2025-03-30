@@ -23,7 +23,7 @@ if ! [ -f "/root/.ssh/.container_init.pwd" ]; then
     echo "root password: ${password}"
 
     # Set the password to outdated
-    chage -D 0 root
+    chage -d 0 root
 fi
 
 # Start the SSH server
