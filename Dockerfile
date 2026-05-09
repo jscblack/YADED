@@ -92,9 +92,10 @@ RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | 
 
 # Make node/npm available system-wide via symlinks
 RUN . "$NVM_DIR/nvm.sh" \
-    && ln -sf "$(which node)" /usr/local/bin/node \
-    && ln -sf "$(which npm)" /usr/local/bin/npm \
-    && ln -sf "$(which npx)" /usr/local/bin/npx \
+    && NODE_BIN_DIR="$(dirname "$(nvm which current)")" \
+    && ln -sf "$NODE_BIN_DIR/node" /usr/local/bin/node \
+    && ln -sf "$NODE_BIN_DIR/npm" /usr/local/bin/npm \
+    && ln -sf "$NODE_BIN_DIR/npx" /usr/local/bin/npx \
     && echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.zshrc \
     && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.zshrc \
     && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.zshrc \
