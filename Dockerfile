@@ -82,6 +82,27 @@ RUN sh -c "$(wget -O- https://gist.githubusercontent.com/jscblack/5c7b4b4f4c18ed
     -p https://github.com/mattmc3/zsh-safe-rm \
     && chsh -s /bin/zsh
 
+# Install NVM, Node.js and npm
+ENV NVM_DIR=/root/.nvm
+RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
+    && . "$NVM_DIR/nvm.sh" \
+    && nvm install --lts \
+    && nvm use --lts \
+    && nvm alias default "lts/*"
+
+# Make node/npm available system-wide via symlinks
+RUN . "$NVM_DIR/nvm.sh" \
+    && NODE_BIN_DIR="$(dirname "$(nvm which current)")" \
+    && ln -sf "$NODE_BIN_DIR/node" /usr/local/bin/node \
+    && ln -sf "$NODE_BIN_DIR/npm" /usr/local/bin/npm \
+    && ln -sf "$NODE_BIN_DIR/npx" /usr/local/bin/npx \
+    && echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.zshrc \
+    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.zshrc \
+    && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.zshrc \
+    && echo 'export NVM_DIR="$HOME/.nvm"' >> /root/.bashrc \
+    && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /root/.bashrc \
+    && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /root/.bashrc
+
 # Clean up APT when done
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
