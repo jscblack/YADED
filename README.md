@@ -11,7 +11,7 @@ Download: [Link1(Global)](https://mega.nz/file/7LZWBZQD#Jhuxhx4mwrrQEunCRjRuNKsp
 ![image](https://github.com/jscblack/YADED/assets/33062157/7dac7590-1582-42d5-a845-ddd5a6c5e02e)
 
 ## Feature
-* Based on Ubuntu LTS: 22.04 / 24.04 / 26.04
+* Based on Ubuntu LTS: 22.04 / 24.04
 * Out-of-the-box Zsh with pre-configured Power10k theme
 * Pre-installed useful Zsh plugins (autosuggestions, completions, syntax-highlighting)
 * Redirecting rm to ensure file safety
@@ -23,8 +23,7 @@ All tags are multi-arch (linux/amd64 + linux/arm64), Docker picks the right arch
 
 | Tag | Ubuntu version |
 | --- | --- |
-| `latest` | 26.04 |
-| `ubuntu-26.04` | 26.04 |
+| `latest` | 24.04 |
 | `ubuntu-24.04` | 24.04 |
 | `ubuntu-22.04` | 22.04 |
 

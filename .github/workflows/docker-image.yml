@@ -15,7 +15,11 @@ jobs:
       fail-fast: false
       matrix:
         # Keep these quoted so they are treated as strings, not floats
-        ubuntu_version: ['22.04', '24.04', '26.04']
+        # 26.04 disabled until its build issues are fixed
+        ubuntu_version:
+          - '22.04'
+          - '24.04'
+          # - '26.04'
 
     steps:
     - name: Checkout
@@ -42,7 +46,7 @@ jobs:
           latest=false
         tags: |
           type=raw,value=ubuntu-${{ matrix.ubuntu_version }}
-          type=raw,value=latest,enable=${{ matrix.ubuntu_version == '26.04' }}
+          type=raw,value=latest,enable=${{ matrix.ubuntu_version == '24.04' }}
 
     - name: Build and push
       uses: docker/build-push-action@v5

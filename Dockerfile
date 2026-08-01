@@ -1,5 +1,5 @@
 # Ubuntu base image version; override with --build-arg UBUNTU_VERSION=<version>
-ARG UBUNTU_VERSION=26.04
+ARG UBUNTU_VERSION=24.04
 FROM ubuntu:${UBUNTU_VERSION}
 
 # Metadata
