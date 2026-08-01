@@ -26,5 +26,8 @@ if ! [ -f "/root/.ssh/.container_init.pwd" ]; then
     chage -d 0 root
 fi
 
-# Start the SSH server
-/usr/sbin/sshd -D
+# Ensure SSH host keys exist (idempotent, does not overwrite existing keys)
+ssh-keygen -A
+
+# Start the SSH server as PID 1 so signals are handled correctly
+exec /usr/sbin/sshd -D

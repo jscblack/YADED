@@ -8,33 +8,52 @@ on:
   #  branches: [ "main" ]
 
 jobs:
-
   build:
+    runs-on: ubuntu-24.04
 
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # Keep these quoted so they are treated as strings, not floats
+        ubuntu_version: ['22.04', '24.04', '26.04']
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
-      
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-      
+
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-    
+
+    - name: Generate image tags
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ secrets.DOCKER_HUB_USERNAME }}/yaded
+        flavor: |
+          latest=false
+        tags: |
+          type=raw,value=ubuntu-${{ matrix.ubuntu_version }}
+          type=raw,value=latest,enable=${{ matrix.ubuntu_version == '26.04' }}
+
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
         context: ./
         file: ./Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
-        platforms: linux/amd64
+        platforms: linux/amd64,linux/arm64
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/yaded:latest
+        build-args: |
+          UBUNTU_VERSION=${{ matrix.ubuntu_version }}
+        tags: ${{ steps.meta.outputs.tags }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

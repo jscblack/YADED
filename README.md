@@ -11,11 +11,24 @@ Download: [Link1(Global)](https://mega.nz/file/7LZWBZQD#Jhuxhx4mwrrQEunCRjRuNKsp
 ![image](https://github.com/jscblack/YADED/assets/33062157/7dac7590-1582-42d5-a845-ddd5a6c5e02e)
 
 ## Feature
-* Based on Ubuntu 22.04
+* Based on Ubuntu LTS: 22.04 / 24.04 / 26.04
 * Out-of-the-box Zsh with pre-configured Power10k theme
 * Pre-installed useful Zsh plugins (autosuggestions, completions, syntax-highlighting)
 * Redirecting rm to ensure file safety
 * Pre-installed common development toolkits, providing consistent and portable development environment, alleviating the hassle of environment conflicts between different projects
+
+## Image Tags
+
+All tags are multi-arch (linux/amd64 + linux/arm64), Docker picks the right architecture automatically.
+
+| Tag | Ubuntu version |
+| --- | --- |
+| `latest` | 26.04 |
+| `ubuntu-26.04` | 26.04 |
+| `ubuntu-24.04` | 24.04 |
+| `ubuntu-22.04` | 22.04 |
+
+Pick a specific version, e.g. `registry.cn-hangzhou.aliyuncs.com/jscblack/yaded:ubuntu-24.04`.
 
 ## Usage
 1. Start the container. Modify the name and port as you want
